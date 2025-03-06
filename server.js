@@ -3,6 +3,34 @@ const fs = require('fs');
 const cors = require('cors');
 const app = express();
 
+
+
+
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const port = process.env.PORT || 8080;
+
+// السماح للخادم بخدمة الملفات الثابتة مثل index.html
+app.use(express.static(__dirname));
+
+// توجيه الطلبات إلى index.html عند زيارة "/"
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// تشغيل الخادم
+app.listen(port, () => {
+    console.log(`🚀 الخادم يعمل على المنفذ ${port}`);
+});
+
+
+
+
+
+
 app.use(express.json()); // تمكين قراءة بيانات JSON من الطلبات
 app.use(cors()); // السماح للمتصفح بإرسال الطلبات
 

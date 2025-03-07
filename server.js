@@ -11,6 +11,47 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 
+
+// ✅ تعديل بيانات المستخدم
+app.put('/users/:index', (req, res) => {
+    fs.readFile('users.json', 'utf8', (err, data) => {
+        if (err) return res.status(500).send("❌ خطأ في قراءة ملف المستخدمين");
+
+        let users = JSON.parse(data);
+        if (req.params.index < 0 || req.params.index >= users.length) {
+            return res.status(400).send("⚠️ المستخدم غير موجود");
+        }
+
+        users[req.params.index] = req.body;
+
+        fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
+            if (err) return res.status(500).send("❌ خطأ في تحديث المستخدم");
+            res.send("✅ تم تعديل المستخدم بنجاح");
+        });
+    });
+});
+
+// ✅ حذف مستخدم
+app.delete('/users/:index', (req, res) => {
+    fs.readFile('users.json', 'utf8', (err, data) => {
+        if (err) return res.status(500).send("❌ خطأ في قراءة ملف المستخدمين");
+
+        let users = JSON.parse(data);
+        if (req.params.index < 0 || req.params.index >= users.length) {
+            return res.status(400).send("⚠️ المستخدم غير موجود");
+        }
+
+        users.splice(req.params.index, 1);
+
+        fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
+            if (err) return res.status(500).send("❌ خطأ في حذف المستخدم");
+            res.send("✅ تم حذف المستخدم بنجاح");
+        });
+    });
+});
+
+
+
 // تقديم الملفات الثابتة (index.html، CSS، JS، إلخ)
 app.use(express.static(__dirname));
 

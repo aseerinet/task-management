@@ -203,12 +203,14 @@
             
             currentUser = user.name;
             console.log("🔹 المستخدم الحالي:", currentUser);
-             document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
+            
             if (user.isAdmin) {
                 alert(`🔹 مرحبًا ${name}! لقد سجلت الدخول كمشرف.`);
+	 document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
                 showAdmin();
             } else {
                 alert(`👋 مرحبًا ${name}! لقد سجلت الدخول كمستخدم عادي.`);
+            document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
                 showUser();
             }
         } catch (error) {

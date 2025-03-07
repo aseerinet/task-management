@@ -72,7 +72,7 @@
     
     <!-- صفحة المشرف -->
    <div id="adminPage" class="container hidden">
-        <h2>مرحبًا مشرف النظام!</h2>
+        <h2 id="welcomeMessage">مرحبًا مشرف النظام!</h2>
         <button onclick="logout()">تسجيل خروج</button>
         <h3>إدارة المستخدمين</h3>
        <!--  <select id="userDeleteSelect"></select>
@@ -101,7 +101,7 @@
     
     <!-- صفحة المستخدم -->
     <div id="userPage" class="container hidden">
-        <h2>مرحبًا بك!</h2>
+        <h2 id="welcomeMessage">مرحبًا بك!</h2>
         <button onclick="logout()">تسجيل خروج</button>
         <h3>مهامك اليومية</h3>
         <table border="1" id="userTaskTable">
@@ -203,7 +203,7 @@
             
             currentUser = user.name;
             console.log("🔹 المستخدم الحالي:", currentUser);
-
+             document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
             if (user.isAdmin) {
                 alert(`🔹 مرحبًا ${name}! لقد سجلت الدخول كمشرف.`);
                 showAdmin();
@@ -271,6 +271,7 @@
     function showAdmin() {
         document.getElementById("loginPage").classList.add("hidden");
         document.getElementById("adminPage").classList.remove("hidden");
+        
         loadUsersIntoSelect();
         loadTasks();
     }

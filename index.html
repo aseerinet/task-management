@@ -332,7 +332,7 @@
 
 
     async function openUserManagement() {
-    let response = await fetch("https://your-app-name.onrender.com/users");
+    let response = await fetch("https://task-management-8q4e.onrender.com/users");
     let users = await response.json();
 
     let tableBody = document.querySelector("#userTable tbody");
@@ -378,7 +378,7 @@ function closeUserManagement() {
 }
 
 async function updateUser(index, newName, newPass) {
-    let response = await fetch(`https://your-app-name.onrender.com/users/${index}`, {
+    let response = await fetch(`https://task-management-8q4e.onrender.com/users/${index}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newName, password: newPass })
@@ -393,7 +393,7 @@ async function updateUser(index, newName, newPass) {
 }
 
 async function deleteUser(index) {
-    let response = await fetch(`https://your-app-name.onrender.com/users/${index}`, { method: "DELETE" });
+    let response = await fetch(`https://task-management-8q4e.onrender.com/users/${index}`, { method: "DELETE" });
 
     if (response.ok) {
         alert("✅ تم حذف المستخدم بنجاح!");

@@ -11,22 +11,33 @@
             font-family: 'Arial', sans-serif;
             text-align: center;
             direction: rtl;
-            background: linear-gradient(to right, #f9e7e7, #e3f7f7);
+            background: #fff;
             color: #333;
             margin: 0;
-            padding: 0;
+            padding:0;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+ display:block;
         }
-        .container {
+          img{
+	margin:auto;
+                width: 40%;
+                border-radius: 15px;
+                margin-top:20px;
+                margin-bottom:20px;
+	
           
+
+          }
+        .container {
+          margin:auto;
             width: 80%;
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.50);
         }
         input, select, button {
             width: 90%;
@@ -49,9 +60,12 @@
     </style>
 </head>
 <body >
+<div id="#img"> <img src="photo.jpg"></div>
+  
     
     <!-- صفحة التسجيل -->
     <div id="registerPage" class="container hidden">
+
         <h2>تسجيل جديد</h2>
         <input type="text" id="regName" placeholder="الاسم" onclick="checkAdminExists()">
         <input type="password" id="regPass" placeholder="كلمة المرور">
@@ -63,6 +77,10 @@
     
     <!-- صفحة تسجيل الدخول -->
     <div id="loginPage" class="container ">
+
+<br>
+<br>
+<br>
         <h2>تسجيل الدخول</h2>
         <input type="text" id="loginName" placeholder="الاسم">
         <input type="password" id="loginPass" placeholder="كلمة المرور">

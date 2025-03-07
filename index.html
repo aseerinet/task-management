@@ -72,7 +72,7 @@
     
     <!-- صفحة المشرف -->
    <div id="adminPage" class="container hidden">
-        <h2 id="welcomeMessage">مرحبًا مشرف النظام!</h2>
+        <h2 id="welcomeMessage"></h2>
         <button onclick="logout()">تسجيل خروج</button>
         <h3>إدارة المستخدمين</h3>
        <!--  <select id="userDeleteSelect"></select>
@@ -101,7 +101,7 @@
     
     <!-- صفحة المستخدم -->
     <div id="userPage" class="container hidden">
-        <h2 id="welcomeMessage">مرحبًا بك!</h2>
+        <h2 id="welcomeMessage2"></h2>
         <button onclick="logout()">تسجيل خروج</button>
         <h3>مهامك اليومية</h3>
         <table border="1" id="userTaskTable">
@@ -210,7 +210,7 @@
                 showAdmin();
             } else {
                 alert(`👋 مرحبًا ${name}! لقد سجلت الدخول كمستخدم عادي.`);
-            document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
+            document.getElementById("welcomeMessage2").textContent = `مرحبًا ${name}!`;
                 showUser();
             }
         } catch (error) {

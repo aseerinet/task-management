@@ -4,7 +4,8 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 8080; // التأكد من استخدام المنفذ الصحيح لـ Render
+const port = process.env.PORT || 8080;
+ // التأكد من استخدام المنفذ الصحيح لـ Render
 
 // تمكين قراءة بيانات JSON من الطلبات
 app.use(express.json());
@@ -117,5 +118,6 @@ app.delete('/tasks/:index', (req, res) => {
 app.listen(port, () => {
     console.log(`🚀 الخادم يعمل على المنفذ ${port}`);
 });
+
 
 });

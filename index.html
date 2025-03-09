@@ -70,16 +70,15 @@
         <img id="userProfileImage" class="profile-img" src="/uploads/default.jpg" onclick="document.getElementById('imageUpload').click();">
     </div>
     
-    <div id="userPage" class="container hidden">
-        <h2 id="welcomeMessage2"></h2>
-        <h3>مهامك اليومية</h3>
-        <table border="1" id="userTaskTable">
+    <div id="adminPage" class="container hidden">
+        <h2 id="welcomeMessage"></h2>
+        <h3>إدارة المستخدمين</h3>
+        <table border="1" id="userTable">
             <thead>
                 <tr>
-                    <th>التاريخ</th>
-                    <th>المهمة</th>
-                    <th>الملاحظات الإيجابية</th>
-                    <th>الملاحظات السلبية</th>
+                    <th>الاسم</th>
+                    <th>مشرف</th>
+                    <th>إجراءات</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -109,6 +108,43 @@
             })
             .catch(error => console.error('❌ خطأ في رفع الصورة:', error));
         });
+
+        async function loadUsers() {
+            let response = await fetch("/users");
+            let users = await response.json();
+            let tableBody = document.querySelector("#userTable tbody");
+            tableBody.innerHTML = "";
+            users.forEach((user, index) => {
+                let row = document.createElement("tr");
+                let nameCell = document.createElement("td");
+                nameCell.textContent = user.name;
+                let adminCell = document.createElement("td");
+                let adminCheckbox = document.createElement("input");
+                adminCheckbox.type = "checkbox";
+                adminCheckbox.checked = user.isAdmin;
+                adminCheckbox.onchange = () => updateUserRole(index, adminCheckbox.checked);
+                adminCell.appendChild(adminCheckbox);
+                let actionsCell = document.createElement("td");
+                row.appendChild(nameCell);
+                row.appendChild(adminCell);
+                row.appendChild(actionsCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        async function updateUserRole(index, isAdmin) {
+            let response = await fetch(`/users/${index}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ isAdmin })
+            });
+            if (response.ok) {
+                alert("✅ تم تحديث صلاحيات المستخدم بنجاح!");
+                loadUsers();
+            } else {
+                alert("❌ حدث خطأ أثناء تحديث المستخدم.");
+            }
+        }
     </script>
 </body>
 </html>

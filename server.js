@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 app.use(express.static(__dirname));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // إتاحة الوصول للصور عبر رابط مباشر
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // إعداد التخزين للصور باستخدام Multer
 const storage = multer.diskStorage({
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        let username = req.body.username || 'default'; // استخدام اسم المستخدم لحفظ الصورة
+        let username = req.body.username || 'default';
         cb(null, `${username}.jpg`);
     }
 });
@@ -37,14 +37,13 @@ app.get('/users', (req, res) => {
 app.post('/users', (req, res) => {
     fs.readFile('users.json', 'utf8', (err, data) => {
         if (err) return res.status(500).send("❌ خطأ في قراءة ملف المستخدمين");
-
         let users = JSON.parse(data);
         let newUser = req.body;
 
         if (!newUser.name || !newUser.password) return res.status(400).send("⚠️ يجب إدخال اسم المستخدم وكلمة المرور");
         if (users.some(user => user.name === newUser.name)) return res.status(400).send("⚠️ اسم المستخدم موجود بالفعل");
         
-        newUser.isAdmin = newUser.name === "admin"; // تعيين admin فقط كمشرف تلقائيًا
+        newUser.isAdmin = newUser.name === "admin";
         users.push(newUser);
 
         fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
@@ -60,25 +59,10 @@ app.put('/users/:index', (req, res) => {
         if (err) return res.status(500).send("❌ خطأ في قراءة ملف المستخدمين");
         let users = JSON.parse(data);
         if (req.params.index < 0 || req.params.index >= users.length) return res.status(400).send("⚠️ المستخدم غير موجود");
-        
         users[req.params.index] = req.body;
         fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
             if (err) return res.status(500).send("❌ خطأ في تحديث المستخدم");
             res.send("✅ تم تعديل المستخدم بنجاح");
-        });
-    });
-});
-
-// حذف المستخدم
-app.delete('/users/:index', (req, res) => {
-    fs.readFile('users.json', 'utf8', (err, data) => {
-        if (err) return res.status(500).send("❌ خطأ في قراءة ملف المستخدمين");
-        let users = JSON.parse(data);
-        if (req.params.index < 0 || req.params.index >= users.length) return res.status(400).send("⚠️ المستخدم غير موجود");
-        users.splice(req.params.index, 1);
-        fs.writeFile('users.json', JSON.stringify(users, null, 2), (err) => {
-            if (err) return res.status(500).send("❌ خطأ في حذف المستخدم");
-            res.send("✅ تم حذف المستخدم بنجاح");
         });
     });
 });

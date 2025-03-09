@@ -22,6 +22,20 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
         .container {
             margin: auto;
             width: 90%;
@@ -51,7 +65,10 @@
     </style>
 </head>
 <body>
-    <div id="img"> <img id="userProfileImage" src="/uploads/default.jpg"></div>
+    <div class="profile-container">
+        <input type="file" id="imageUpload" class="hidden" accept="image/*">
+        <img id="userProfileImage" class="profile-img" src="/uploads/default.jpg" onclick="document.getElementById('imageUpload').click();">
+    </div>
     
     <div id="userPage" class="container hidden">
         <h2 id="welcomeMessage2"></h2>
@@ -74,6 +91,24 @@
         function showUserProfile(username) {
             document.getElementById('userProfileImage').src = `/uploads/${username}.jpg`;
         }
+
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            let formData = new FormData();
+            formData.append('image', file);
+            formData.append('username', currentUser);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('userProfileImage').src = data.imageUrl;
+                alert(data.message);
+            })
+            .catch(error => console.error('❌ خطأ في رفع الصورة:', error));
+        });
     </script>
 </body>
 </html>

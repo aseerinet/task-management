@@ -1,5 +1,3 @@
-
-      
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -14,25 +12,18 @@
             background: #fff;
             color: #333;
             margin: 0;
-            padding:0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
- display:block;
+            padding: 0;
+            display: block;
         }
-          img{
-	margin:auto;
-                width: 60%;
-                border-radius: 15px;
-                margin-top:20px;
-                margin-bottom:20px;
-	
-          
-
-          }
+        img {
+            margin: auto;
+            width: 60%;
+            border-radius: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
         .container {
-          margin:auto;
+            margin: auto;
             width: 90%;
             background: white;
             padding: 5px;
@@ -56,120 +47,14 @@
         }
         button:hover { background: #48a; }
         .hidden { display: none; }
-   table{width:100%;}
+        table { width: 100%; }
     </style>
 </head>
-<body >
-<div id="#img"> <img src="photo.jpg"></div>
-  
+<body>
+    <div id="img"> <img id="userProfileImage" src="/uploads/default.jpg"></div>
     
-    <!-- صفحة التسجيل -->
-    <div id="registerPage" class="container hidden">
-
-        <h1>تسجيل جديد</h1>
-        <input type="text" id="regName" placeholder="الاسم" onclick="checkAdminExists()">
-        <input type="password" id="regPass" placeholder="كلمة المرور">
-        <input type="password" id="regPassConfirm" placeholder="تأكيد كلمة المرور">
-       <!-- <label><input type="checkbox" id="isAdmin"> تسجيل كمشرف</label>-->
-        <button onclick="register()">تسجيل</button>
-        <p>لديك حساب؟ <a href="#" onclick="showLogin()">سجل دخول</a></p>
-    </div>
-    
-    <!-- صفحة تسجيل الدخول -->
-    <div id="loginPage" class="container ">
-
-
-        <h1>تسجيل الدخول</h1>
-        <input type="text" id="loginName" placeholder="الاسم">
-        <input type="password" id="loginPass" placeholder="كلمة المرور">
-        <button onclick="login()">دخول</button>
-        <p>ليس لديك حساب؟ <a href="#" onclick="showRegister()">سجل جديد</a></p>
-    </div>
-    
-    <!-- صفحة المشرف -->
-   <div id="adminPage" class="container hidden">
-        <h2 id="welcomeMessage"></h2>
-      
-        <h3>إدارة المستخدمين</h3>
-        
-
-
-        <!-- زر لفتح النافذة المنبثقة -->
-<button onclick="openUserManagement()">إدارة المستخدمين</button>
-
-<!-- نافذة منبثقة لإدارة المستخدمين -->
-<div id="userManagementModal" class="modal hidden">
-    <div class="modal-content">
-        <h2>إدارة المستخدمين</h2>
-        <table border="1" id="userTable">
-            <thead>
-                <tr>
-                    <th>الاسم</th>
-                    <th>كلمة المرور</th>
-                    <th>إجراءات</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button onclick="closeUserManagement()">إغلاق</button>
-    </div>
-</div>
-
-<style>
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        width: 50%;
-        text-align: center;
-    }
-    .hidden { display: none; }
-</style>
-
-
-
-
-
-
-
-        <h3>إضافة مهمة للمستخدم</h3>
-         <select id="userTaskSelect"></select>
-        <input type="text" id="taskText" placeholder="المهمة">
-        <input type="text" id="positiveNote" placeholder="الملاحظات الإيجابية">
-        <input type="text" id="negativeNote" placeholder="الملاحظات السلبية">
-        <button onclick="addTask()">إضافة المهمة</button>
-        <h3>جدول المهام</h3>
-        <table border="1" id="taskTable">
-            <thead>
-                <tr>
-                    <th>التاريخ</th>
-                    <th>الاسم</th>
-                    <th>المهمة</th>
-                    <th>الملاحظات الإيجابية</th>
-                    <th>الملاحظات السلبية</th>
-                    <th>إجراءات</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-       <button onclick="logout()">تسجيل خروج</button>
-    </div>
-    
-    <!-- صفحة المستخدم -->
     <div id="userPage" class="container hidden">
         <h2 id="welcomeMessage2"></h2>
-       
         <h3>مهامك اليومية</h3>
         <table border="1" id="userTaskTable">
             <thead>
@@ -182,280 +67,13 @@
             </thead>
             <tbody></tbody>
         </table>
-           <button onclick="logout()">تسجيل خروج</button>
+        <button onclick="logout()">تسجيل خروج</button>
     </div>
     
     <script>
-
-
-
-
-
-                       
-
-
-     async function loadUsersIntoSelect() {
-            try {
-                let response = await fetch("https://task-management-8q4e.onrender.com/users");
-                let users = await response.json();
-               
-                let userTaskSelect = document.getElementById("userTaskSelect");
-            
-                userTaskSelect.innerHTML = "";
-                
-                users.forEach(user => {
-                   
-                    
-                    let optionTask = document.createElement("option");
-                    optionTask.value = user.name; 
-                    optionTask.textContent = user.name;
-                    userTaskSelect.appendChild(optionTask);
-                });
-            } catch (error) {
-                console.error("❌ خطأ في تحميل المستخدمين:", error);
-            }
+        function showUserProfile(username) {
+            document.getElementById('userProfileImage').src = `/uploads/${username}.jpg`;
         }
-        
-      
-            
-  
-    
-
-
-    async function register() {
-        let name = document.getElementById("regName").value.trim();
-        let pass = document.getElementById("regPass").value.trim();
-        let passConfirm = document.getElementById("regPassConfirm").value.trim();
-        
-        if (!name || !pass || pass !== passConfirm) {
-            alert("⚠️ يرجى إدخال البيانات بشكل صحيح والتأكد من تطابق كلمة المرور!");
-            return;
-        }
-
-        let newUser = { name, password: pass, isAdmin: false }; // افتراضيًا جميع المستخدمين ليسوا مشرفين
-
-        let response = await fetch("https://task-management-8q4e.onrender.com/users", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newUser)
-        });
-	
-           
-
-
-
-
-
-        if (response.ok) {
-            alert("✅ تم تسجيل المستخدم بنجاح! يمكنك الآن تسجيل الدخول.");
-            showLogin();
-        } else {
-            alert("❌ خطأ في التسجيل.");
-        }
-    }
-
-    async function login() {
-        let name = document.getElementById("loginName").value.trim();
-        let pass = document.getElementById("loginPass").value.trim();
-
-        try {
-            let response = await fetch("https://task-management-8q4e.onrender.com/users");
-            let users = await response.json();
-
-            let user = users.find(user => user.name === name && user.password === pass);
-
-            if (!user) {
-                alert("❌ بيانات غير صحيحة، يرجى التأكد من الاسم وكلمة المرور.");
-                return;
-            }
-            
-            currentUser = user.name;
-            console.log("🔹 المستخدم الحالي:", currentUser);
-            
-            if (user.isAdmin) {
-               /* alert(`🔹 مرحبًا ${name}! لقد سجلت الدخول كمشرف.`);*/
-	 document.getElementById("welcomeMessage").textContent = `مرحبًا ${name}!`;
-                showAdmin();
-            } else {
-                /*alert(`👋 مرحبًا ${name}! لقد سجلت الدخول كمستخدم عادي.`);*/
-            document.getElementById("welcomeMessage2").textContent = `مرحبًا ${name}!`;
-                showUser();
-            }
-        } catch (error) {
-            console.error("❌ حدث خطأ أثناء تسجيل الدخول:", error);
-            alert("❌ لا يمكن الاتصال بالخادم.");
-        }
-    }
-
-   async function addTask() {
-  let user = document.getElementById("userTaskSelect").value;
-    let task = document.getElementById("taskText").value;
-    let positiveNote = document.getElementById("positiveNote").value;
-    let negativeNote = document.getElementById("negativeNote").value;
-    let newTask = { user, task, positiveNote, negativeNote, date: new Date().toISOString().split('T')[0] };
-
-    let response = await fetch("https://task-management-8q4e.onrender.com/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTask)
-    });
-
-    if (response.ok) {
-        loadTasks();
-    }
-}
-
-    async function loadTasks() {
-        let response = await fetch("https://task-management-8q4e.onrender.com/tasks");
-        let tasks = await response.json();
-        let tableBody = document.querySelector("#taskTable tbody");
-        tableBody.innerHTML = tasks.map((task, index) => `
-            <tr>
-                <td>${task.date}</td>
-                <td>${task.user}</td>
-                <td>${task.task}</td>
-                <td>${task.positiveNote}</td>
-                <td>${task.negativeNote}</td>
-                <td>
-                    <button onclick="deleteTask('${task.id}')">حذف</button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    async function deleteTask(taskId) {
-        await fetch(`https://task-management-8q4e.onrender.com/tasks/${taskId}`, { method: "DELETE" });
-        loadTasks();
-    }
-
-    function showLogin() {
-        document.getElementById("registerPage").classList.add("hidden");
-        document.getElementById("loginPage").classList.remove("hidden");
-    }
-
-    function showRegister() {
-        document.getElementById("registerPage").classList.remove("hidden");
-        document.getElementById("loginPage").classList.add("hidden");
-    }
-
-    function showAdmin() {
-        document.getElementById("loginPage").classList.add("hidden");
-        document.getElementById("adminPage").classList.remove("hidden");
-        
-        loadUsersIntoSelect();
-        loadTasks();
-    }
-
-
-    async function openUserManagement() {
-    let response = await fetch("https://task-management-8q4e.onrender.com/users");
-    let users = await response.json();
-
-    let tableBody = document.querySelector("#userTable tbody");
-    tableBody.innerHTML = "";
-
-    users.forEach((user, index) => {
-        let row = document.createElement("tr");
-
-        let nameCell = document.createElement("td");
-        let nameInput = document.createElement("input");
-        nameInput.value = user.name;
-        nameCell.appendChild(nameInput);
-
-        let passCell = document.createElement("td");
-        let passInput = document.createElement("input");
-        passInput.value = user.password;
-        passInput.type = "password";
-        passCell.appendChild(passInput);
-
-        let actionsCell = document.createElement("td");
-        let saveButton = document.createElement("button");
-        saveButton.textContent = "💾 حفظ";
-        saveButton.onclick = () => updateUser(index, nameInput.value, passInput.value);
-
-        let deleteButton = document.createElement("button");
-        deleteButton.textContent = "🗑 حذف";
-        deleteButton.onclick = () => deleteUser(index);
-
-        actionsCell.appendChild(saveButton);
-        actionsCell.appendChild(deleteButton);
-
-        row.appendChild(nameCell);
-        row.appendChild(passCell);
-        row.appendChild(actionsCell);
-        tableBody.appendChild(row);
-    });
-
-    document.getElementById("userManagementModal").classList.remove("hidden");
-}
-
-function closeUserManagement() {
-    document.getElementById("userManagementModal").classList.add("hidden");
-}
-
-async function updateUser(index, newName, newPass) {
-    let response = await fetch(`https://task-management-8q4e.onrender.com/users/${index}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName, password: newPass })
-    });
-
-    if (response.ok) {
-        alert("✅ تم تحديث المستخدم بنجاح!");
-        openUserManagement();
-    } else {
-        alert("❌ حدث خطأ أثناء تحديث المستخدم.");
-    }
-}
-
-async function deleteUser(index) {
-    let response = await fetch(`https://task-management-8q4e.onrender.com/users/${index}`, { method: "DELETE" });
-
-    if (response.ok) {
-        alert("✅ تم حذف المستخدم بنجاح!");
-        openUserManagement();
-    } else {
-        alert("❌ حدث خطأ أثناء حذف المستخدم.");
-    }
-}
-
-
-
-    function showUser() {
-        document.getElementById("loginPage")?.classList.add("hidden");
-        document.getElementById("userPage").classList.remove("hidden");
-        setTimeout(loadUserTasks, 500);
-    }
-
-    async function loadUserTasks() {
-        try {
-            let response = await fetch("https://task-management-8q4e.onrender.com/tasks");
-            let tasks = await response.json();
-            let userTasks = tasks.filter(task => task.user === currentUser);
-            
-            let tableBody = document.querySelector("#userTaskTable tbody");
-            tableBody.innerHTML = userTasks.length > 0 ? userTasks.map(task => `
-                <tr>
-                    <td>${task.date}</td>
-                    <td>${task.task}</td>
-                    <td>${task.positiveNote}</td>
-                    <td>${task.negativeNote}</td>
-                </tr>
-            `).join('') : "<tr><td colspan='4'>لا توجد مهام حاليًا</td></tr>";
-        } catch (error) {
-            console.error("❌ خطأ في تحميل المهام:", error);
-        }
-    }
-
-    function logout() { location.reload(); }
-
-    window.onload = function() {
-       loadUsersIntoSelect();
-            loadTasks();
-      
-    };
-
-
     </script>
 </body>
 </html>
